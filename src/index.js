@@ -5,6 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var mime = require('mime');
 var util = require('util');
+var svgo = require('svgo');
 var Stream = require('stream').Stream;
 
 // NPM library
@@ -15,9 +16,9 @@ var buffers = require('buffers');
 var async = require('async');
 var chalk = require('chalk');
 
-var rImages = /url(?:\(['|"]?)(.*?)(?:['|"]?\))(?!.*\/\*base64:skip\*\/)/ig;
+var rImages = /url(?:\(['|"]?)(.*?.svg)(?:['|"]?\))(?!.*\/\*svg:skip\*\/)/ig;
 
-function gulpCssBase64(opts) {
+function gulpCssSvg(opts) {
   opts = JSON.parse(JSON.stringify(opts || {}));
   opts.maxWeightResource = opts.maxWeightResource || 32768;
   if (util.isArray(opts.extensionsAllowed)) {
@@ -73,7 +74,8 @@ function gulpCssBase64(opts) {
                         return;
                       }
 
-                      var strRes = 'data:' + mime.lookup(fileRes.path) + ';base64,' + fileRes.contents.toString('base64');
+                      var strRes = 'data:' + mime.lookup(fileRes.path) + ';utf8,';
+										 new svgo().optimize(fileRes.contents.toString('utf8'), function(result) { strRes += result.data; });//.replace("'",'"').replace(/<!-- .* -->/,'').replace(/<\?;
                       src = src.replace(result[1], strRes);
 
                             // Store in cache
@@ -92,7 +94,7 @@ function gulpCssBase64(opts) {
     }
 
     if (file.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-css-base64', 'Stream not supported!'));
+      this.emit('error', new gutil.PluginError('gulp-css-svg', 'Stream not supported!'));
     }
   });
 
@@ -192,4 +194,4 @@ function log(message, isVerbose) {
 }
 
 // Exporting the plugin main function
-module.exports = gulpCssBase64;
+module.exports = gulpCssSvg;
