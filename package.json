@@ -1,15 +1,16 @@
 {
-  "name": "gulp-css-base64",
-  "description": "Gulp's task for transform all resources found in a CSS into base64-encoded data URI strings",
-  "version": "1.3.4",
-  "homepage": "http://github.com/zckrs/gulp-css-base64",
+  "name": "gulp-css-svg",
+  "description": "Gulp's task for transform all svg urls found in a CSS into URI encoded data URI strings",
+  "version": "1.0.0",
+  "homepage": "http://github.com/bobprime/gulp-css-svg",
   "repository": "zckrs/gulp-css-base64.git",
   "bugs": {
-    "url": "http://github.com/zckrs/gulp-css-base64/issues",
-    "email": "mdara@eleven-labs.com"
+    "url": "http://github.com/bobprime/gulp-css-svg/issues",
+    "email": "stephanie@steph.tech"
   },
-  "author": "Mehdy Dara <mdara@eleven-labs.com> (http://eleven-labs.com/)",
+  "author": "Stephanie Miller <stephanie@steph.tech> (https://steph.tech)",
   "contributors": [
+    "Stephanie Miller <stephanie@steph.tech> (https://steph.tech/)",
     "Mehdy Dara <mdara@eleven-labs.com> (http://eleven-labs.com/)",
     "Callum Jefferies <callum.jefferies@gmail.com> (http://callumj.uk/)"
   ],
@@ -20,7 +21,7 @@
   "keywords": [
     "gulpplugin",
     "css",
-    "base64"
+    "svg"
   ],
   "dependencies": {
     "async": "^1.5.0",
@@ -49,7 +50,7 @@
   "eslintConfig": {
     "extends": "xo-space",
     "env": {
-        "mocha": true
+      "mocha": true
     }
   }
 }

@@ -1,11 +1,11 @@
-# gulp-css-base64
+# gulp-css-svg
 
-[![Build Status](http://img.shields.io/travis/zckrs/gulp-css-base64.svg?style=flat)](https://travis-ci.org/zckrs/gulp-css-base64)
-[![Coverage Status](http://img.shields.io/coveralls/zckrs/gulp-css-base64.svg?style=flat)](https://coveralls.io/r/zckrs/gulp-css-base64?branch=master)
-[![Dependencies](http://img.shields.io/david/zckrs/gulp-css-base64.svg?style=flat)](https://david-dm.org/zckrs/gulp-css-base64) [![NPM Version](http://img.shields.io/npm/v/gulp-css-base64.svg?style=flat)](https://www.npmjs.org/package/gulp-css-base64) [![Download Month](http://img.shields.io/npm/dm/gulp-css-base64.svg?style=flat)](https://www.npmjs.org/package/gulp-css-base64)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/zckrs/gulp-css-base64?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](http://img.shields.io/travis/bobprime/gulp-css-svg.svg?style=flat)](https://travis-ci.org/bobprime/gulp-css-svg)
+[![Coverage Status](http://img.shields.io/coveralls/bobprime/gulp-css-svg.svg?style=flat)](https://coveralls.io/r/bobprime/gulp-css-svg?branch=master)
+[![Dependencies](http://img.shields.io/david/bobprime/gulp-css-svg.svg?style=flat)](https://david-dm.org/bobprime/gulp-css-svg) [![NPM Version](http://img.shields.io/npm/v/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg) [![Download Month](http://img.shields.io/npm/dm/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/bobprime/gulp-css-svg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This gulp task converts all data found within a stylesheet (those within a url( ... ) declaration) into base64-encoded data URI strings. This includes images and fonts.
+This gulp task converts all svg urls found within a stylesheet (those within a url( ... ) declaration) into uri-encoded data URI strings WITHOUT doing a base64 encode.  This helps see what is going on and saves space.
 
 Inspired by [grunt-image-embed](https://github.com/ehynds/grunt-image-embed) and written following [gulp's guidelines](https://github.com/gulpjs/gulp/tree/master/docs/writing-a-plugin).
 
@@ -25,13 +25,13 @@ Inspired by [grunt-image-embed](https://github.com/ehynds/grunt-image-embed) and
 Install this plugin with the command:
 
 ```js
-npm install --save-dev gulp-css-base64
+npm install --save-dev gulp-css-svg
 ```
 
 ## Usage
 
 ```js
-var cssBase64 = require('gulp-css-base64');
+var cssBase64 = require('gulp-css-svg');
 
 //Without options
 gulp.task('default', function () {
@@ -73,10 +73,10 @@ Default value: `[]`
 
 ## Ignore a specific resource
 
-You can ignore a resource with a comment `/*base64:skip*/` in CSS file after url definition.
+You can ignore a resource with a comment `/*svg:skip*/` in CSS file after url definition.
 ```css
 .ignored{
-  background: url(image.png); /*base64:skip*/
+  background: url(image.png); /*svg:skip*/
 }
 .encoded{
   background: url(image.jpg);
@@ -84,4 +84,4 @@ You can ignore a resource with a comment `/*base64:skip*/` in CSS file after url
 ```
 
 ## License
-Copyright (c) 2014 [Mehdy Dara](https://github.com/zckrs) under the MIT License.
+Copyright (c) 2014 [Stephanie Miller](https://github.com/bobprime) under the MIT License.
