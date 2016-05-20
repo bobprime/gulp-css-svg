@@ -74,9 +74,9 @@ function gulpCssSvg(opts) {
                         return;
                       }
 
-                      var strRes = 'data:' + mime.lookup(fileRes.path) + ';utf8,';
-										 new svgo().optimize(fileRes.contents.toString('utf8'), function(result) { strRes += result.data; });//.replace("'",'"').replace(/<!-- .* -->/,'').replace(/<\?;
-                      src = src.replace(result[1], strRes);
+                      var strRes = 'data:' + mime.lookup(fileRes.path) + ';';
+										 new svgo().optimize(fileRes.contents.toString('utf8'), function(result) { strRes += result.data.replace(/"/g,"'").replace(/</g,'%3C').replace(/>/g,'%3E'); });//.replace("'",'"').replace(/<!-- .* -->/,'').replace(/<\?;
+                      src = src.replace(result[1], '"' + strRes + '"');
 
                             // Store in cache
                       cache[result[1]] = strRes;
