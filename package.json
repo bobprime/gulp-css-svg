@@ -1,7 +1,7 @@
 {
   "name": "gulp-css-svg",
   "description": "Gulp's task for transform all svg urls found in a CSS into URI encoded data URI strings",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "http://github.com/bobprime/gulp-css-svg",
   "repository": "zckrs/gulp-css-base64.git",
   "bugs": {
