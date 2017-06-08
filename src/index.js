@@ -21,12 +21,6 @@ var rImages = /url(?:\(['|"]?)(.*?.svg)(?:['|"]?\))(?!.*\/\*svg:skip\*\/)/ig;
 function gulpCssSvg(opts) {
   opts = JSON.parse(JSON.stringify(opts || {}));
   opts.maxWeightResource = opts.maxWeightResource || 32768;
-  if (util.isArray(opts.extensionsAllowed)) {
-    opts.extensionsAllowed = opts.extensionsAllowed;
-  } else {
-    opts.extensionsAllowed = [];
-  }
-  opts.extensionsAllowed = opts.extensionsAllowed || [];
   opts.baseDir = opts.baseDir || '';
   opts.verbose = process.argv.indexOf('--verbose') !== -1;
 
@@ -60,11 +54,6 @@ function gulpCssSvg(opts) {
                   }
 
                   var pureUrl = result[1].split('?')[0].split('#')[0];
-                  if (opts.extensionsAllowed.length !== 0 && opts.extensionsAllowed.indexOf(path.extname(pureUrl)) === -1) {
-                    log('Ignores ' + chalk.yellow(result[1]) + ', extension not allowed ' + chalk.yellow(path.extname(result[1])), opts.verbose);
-                    callback();
-                    return;
-                  }
 
                   encodeResource(result[1], file, opts, function (fileRes) {
                     if (undefined !== fileRes) {

@@ -15,7 +15,6 @@ Inspired by [grunt-image-embed](https://github.com/ehynds/grunt-image-embed) and
 * Supports buffer (and stream **WIP**).
 * [[>]](#optionsbasedir) Ability to define a relative base directory to gulpfile.js. Default is the current directory.
 * [[>]](#optionsmaxweightresource) Ability to specify a weight limit. Default is 32kB which is IE8's limit.
-* [[>]](#optionsextensionsallowed) Ability to filter on file extensions. Default there is no filter.
 * [[>]](#ignore-a-specific-resource) Ignore a resource by specifying a directive comment in CSS.
 * Existing data URIs will be ignored.
 * Existing SVG masks will be ignored.
@@ -45,8 +44,7 @@ gulp.task('default', function () {
     return gulp.src('src/css/input.css')
         .pipe(cssSvg({
             baseDir: "../../images",
-            maxWeightResource: 100,
-            extensionsAllowed: ['.gif', '.jpg']
+            maxWeightResource: 100
         }))
         .pipe(gulp.dest('dist'));
 });
@@ -66,11 +64,6 @@ Type: `Number`
 
 Default value: `32768`
 
-#### options.extensionsAllowed
-Type: `Array`
-
-Default value: `[]`
-
 ## Ignore a specific resource
 
 You can ignore a resource with a comment `/*svg:skip*/` in CSS file after url definition.
@@ -84,4 +77,4 @@ You can ignore a resource with a comment `/*svg:skip*/` in CSS file after url de
 ```
 
 ## License
-Copyright (c) 2014 [Stephanie Miller](https://github.com/shysteph) under the MIT License.
+Copyright (c) 2017 [Stephanie Miller](https://github.com/shysteph) under the MIT License.
