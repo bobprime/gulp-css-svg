@@ -1,3 +1,5 @@
+.idea
+gulp-css-svg.iml
 node_modules/
 coverage/
 npm-debug.log

@@ -1,9 +1,9 @@
 # gulp-css-svg
 
-[![Build Status](http://img.shields.io/travis/bobprime/gulp-css-svg.svg?style=flat)](https://travis-ci.org/bobprime/gulp-css-svg)
-[![Coverage Status](http://img.shields.io/coveralls/bobprime/gulp-css-svg.svg?style=flat)](https://coveralls.io/r/bobprime/gulp-css-svg?branch=master)
-[![Dependencies](http://img.shields.io/david/bobprime/gulp-css-svg.svg?style=flat)](https://david-dm.org/bobprime/gulp-css-svg) [![NPM Version](http://img.shields.io/npm/v/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg) [![Download Month](http://img.shields.io/npm/dm/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/bobprime/gulp-css-svg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](http://img.shields.io/travis/shysteph/gulp-css-svg.svg?style=flat)](https://travis-ci.org/shysteph/gulp-css-svg)
+[![Coverage Status](http://img.shields.io/coveralls/shysteph/gulp-css-svg.svg?style=flat)](https://coveralls.io/r/shysteph/gulp-css-svg?branch=master)
+[![Dependencies](http://img.shields.io/david/shysteph/gulp-css-svg.svg?style=flat)](https://david-dm.org/shysteph/gulp-css-svg) [![NPM Version](http://img.shields.io/npm/v/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg) [![Download Month](http://img.shields.io/npm/dm/gulp-css-svg.svg?style=flat)](https://www.npmjs.org/package/gulp-css-svg)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/shysteph/gulp-css-svg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This gulp task converts all svg urls found within a stylesheet (those within a url( ... ) declaration) into uri-encoded data URI strings WITHOUT doing a base64 encode.  This helps see what is going on and saves space.
 
@@ -31,19 +31,19 @@ npm install --save-dev gulp-css-svg
 ## Usage
 
 ```js
-var cssBase64 = require('gulp-css-svg');
+var cssSvg = require('gulp-css-svg');
 
 //Without options
 gulp.task('default', function () {
     return gulp.src('src/css/input.css')
-        .pipe(cssBase64())
+        .pipe(cssSvg())
         .pipe(gulp.dest('dist'));
 });
 
 //With options
 gulp.task('default', function () {
     return gulp.src('src/css/input.css')
-        .pipe(cssBase64({
+        .pipe(cssSvg({
             baseDir: "../../images",
             maxWeightResource: 100,
             extensionsAllowed: ['.gif', '.jpg']
@@ -84,4 +84,4 @@ You can ignore a resource with a comment `/*svg:skip*/` in CSS file after url de
 ```
 
 ## License
-Copyright (c) 2014 [Stephanie Miller](https://github.com/bobprime) under the MIT License.
+Copyright (c) 2014 [Stephanie Miller](https://github.com/shysteph) under the MIT License.

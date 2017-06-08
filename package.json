@@ -1,16 +1,16 @@
 {
   "name": "gulp-css-svg",
   "description": "Gulp's task for transform all svg urls found in a CSS into URI encoded data URI strings",
-  "version": "1.2.0",
-  "homepage": "http://github.com/bobprime/gulp-css-svg",
-  "repository": "zckrs/gulp-css-base64.git",
+  "version": "1.2.1",
+  "homepage": "https://github.com/shysteph/gulp-css-svg",
+  "repository": "shysteph/gulp-css-svg.git",
   "bugs": {
-    "url": "http://github.com/bobprime/gulp-css-svg/issues",
+    "url": "http://github.com/shysteph/gulp-css-svg/issues",
     "email": "stephanie@steph.tech"
   },
-  "author": "Stephanie Miller <stephanie@steph.tech> (https://steph.tech)",
+  "author": "Stephanie Miller <stephanie@shysteph.com> (https://shysteph.com)",
   "contributors": [
-    "Stephanie Miller <stephanie@steph.tech> (https://steph.tech/)",
+    "Stephanie Miller <stephanie@shysteph.com> (https://shysteph.com/)",
     "Mehdy Dara <mdara@eleven-labs.com> (http://eleven-labs.com/)",
     "Callum Jefferies <callum.jefferies@gmail.com> (http://callumj.uk/)"
   ],
