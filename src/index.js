@@ -58,30 +58,30 @@ function gulpCssSvg(opts) {
           encodeResource(result[2], file, opts, function (fileRes) {
             if (undefined !== fileRes) {
               if (fileRes.contents.length > opts.maxWeightResource) {
-                opts.verbose && log('Ignores ' + chalk.yellow(result[1]) + ', file is too big ' + chalk.yellow(fileRes.contents.length + ' bytes'));
+                if (opts.verbose) {
+                  log('Ignores ' + chalk.yellow(result[1]) + ', file is too big ' + chalk.yellow(fileRes.contents.length + ' bytes'));
+                }
                 callback();
                 return;
               }
 
               strRes = 'data:' + mime.getType(fileRes.path) + ';charset=utf8,';
               new SVGO().optimize(fileRes.contents.toString('utf8'), {path: fileRes.path}).then(function (optomized) {
-                strRes += optomized.data.replace(/"/g, '\'').
-                  replace(/</g, '%3C').
-                  replace(/>/g, '%3E').
-                  replace(/{/g, '%7B').
-                  replace(/}/g, '%7D').
-                  replace(/#/g, '%23');
+                strRes += optomized.data.replace(/"/g, '\'')
+                  .replace(/</g, '%3C')
+                  .replace(/>/g, '%3E')
+                  .replace(/{/g, '%7B')
+                  .replace(/}/g, '%7D')
+                  .replace(/#/g, '%23');
                 strRes = '("' + strRes + '")';
                 src = src.replace(result[1], strRes);
 
                 // Store in cache
                 cache[result[2]] = strRes;
                 callback();
-                return;
-              }).catch(function(error) {
-                log('Failed to process ' + chalk.yellow(fileRes.path) + " - " + chalk.yellow(error));
+              }).catch(function (error) {
+                log('Failed to process ' + chalk.yellow(fileRes.path) + ' - ' + chalk.yellow(error));
                 callback();
-                return;
               });
             }
           });
@@ -120,7 +120,9 @@ function encodeResource(img, file, opts, doneCallback) {
   }
 
   if (/^(http|https|\/\/)/.test(img)) {
-    opts.verbose && log('Fetch ' + chalk.yellow(img));
+    if (opts.verbose) {
+      log('Fetch ' + chalk.yellow(img));
+    }
     // Different case for uri start '//'
     if (img[0] + img[1] === '//') {
       img = 'http:' + img;
@@ -135,7 +137,6 @@ function encodeResource(img, file, opts, doneCallback) {
       fileRes.path = img;
       fileRes.contents = resultBuffer;
       doneCallback(fileRes);
-      return;
     });
   } else {
     var location = '';
@@ -156,7 +157,6 @@ function encodeResource(img, file, opts, doneCallback) {
     fileRes.contents = binRes;
 
     doneCallback(fileRes);
-    return;
   }
 }
 
