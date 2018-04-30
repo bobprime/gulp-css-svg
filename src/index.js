@@ -8,7 +8,9 @@ var SVGO = require('svgo');
 var Stream = require('stream').Stream;
 
 // NPM library
-var gutil = require('gulp-util');
+var File = require('vinyl');
+var PluginError = require('plugin-error');
+var log = require('fancy-log');
 var through = require('through2');
 var request = require('request');
 var buffers = require('buffers');
@@ -52,29 +54,40 @@ function gulpCssSvg(opts) {
             return;
           }
 
+          var strRes = '';
           encodeResource(result[2], file, opts, function (fileRes) {
             if (undefined !== fileRes) {
               if (fileRes.contents.length > opts.maxWeightResource) {
-                log('Ignores ' + chalk.yellow(result[1]) + ', file is too big ' + chalk.yellow(fileRes.contents.length + ' bytes'), opts.verbose);
+                opts.verbose && log('Ignores ' + chalk.yellow(result[1]) + ', file is too big ' + chalk.yellow(fileRes.contents.length + ' bytes'));
                 callback();
                 return;
               }
 
-              var strRes = 'data:' + mime.lookup(fileRes.path) + ';charset=utf8,';
-              new SVGO().optimize(fileRes.contents.toString('utf8'), function (result) {
-                strRes += result.data.replace(/"/g, '\'').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/{/g, '%7B').replace(/}/g, '%7D').replace(/#/g, '%23');
-              });
-              strRes = '("' + strRes + '")';
-              src = src.replace(result[1], strRes);
+              strRes = 'data:' + mime.getType(fileRes.path) + ';charset=utf8,';
+              new SVGO().optimize(fileRes.contents.toString('utf8'), {path: fileRes.path}).then(function (optomized) {
+                strRes += optomized.data.replace(/"/g, '\'').
+                  replace(/</g, '%3C').
+                  replace(/>/g, '%3E').
+                  replace(/{/g, '%7B').
+                  replace(/}/g, '%7D').
+                  replace(/#/g, '%23');
+                strRes = '("' + strRes + '")';
+                src = src.replace(result[1], strRes);
 
-              // Store in cache
-              cache[result[2]] = strRes;
+                // Store in cache
+                cache[result[2]] = strRes;
+                callback();
+                return;
+              }).catch(function(error) {
+                log('Failed to process ' + chalk.yellow(fileRes.path) + " - " + chalk.yellow(error));
+                callback();
+                return;
+              });
             }
-            callback();
           });
         },
         function () {
-          file.contents = new Buffer(src);
+          file.contents = Buffer.from(src);
           currentStream.push(file);
 
           return callbackStream();
@@ -83,39 +96,39 @@ function gulpCssSvg(opts) {
     }
 
     if (file.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-css-svg', 'Stream not supported!'));
+      this.emit('error', new PluginError('gulp-css-svg', 'Stream not supported!'));
     }
   });
 
-  // returning the file stream
+  // Returning the file stream
   return stream;
 }
 
 function encodeResource(img, file, opts, doneCallback) {
-  var fileRes = new gutil.File();
+  var fileRes = new File();
 
   if (/^data:/.test(img)) {
-    log('Ignores ' + chalk.yellow(img.substring(0, 30) + '...') + ', already encoded', opts.verbose);
+    log('Ignores ' + chalk.yellow(img.substring(0, 30) + '...') + ', already encoded');
     doneCallback();
     return;
   }
 
   if (img[0] === '#') {
-    log('Ignores ' + chalk.yellow(img.substring(0, 30) + '...') + ', SVG mask', opts.verbose);
+    log('Ignores ' + chalk.yellow(img.substring(0, 30) + '...') + ', SVG mask');
     doneCallback();
     return;
   }
 
   if (/^(http|https|\/\/)/.test(img)) {
-    log('Fetch ' + chalk.yellow(img), opts.verbose);
-    // different case for uri start '//'
+    opts.verbose && log('Fetch ' + chalk.yellow(img));
+    // Different case for uri start '//'
     if (img[0] + img[1] === '//') {
       img = 'http:' + img;
     }
 
     fetchRemoteRessource(img, function (resultBuffer) {
       if (resultBuffer === null) {
-        log('Error: ' + chalk.red(img) + ', unable to fetch', opts.verbose);
+        log('Error: ' + chalk.red(img) + ', unable to fetch');
         doneCallback();
         return;
       }
@@ -132,7 +145,7 @@ function encodeResource(img, file, opts, doneCallback) {
     location = location.replace(/([?#].*)$/, '');
 
     if (!fs.existsSync(location)) {
-      log('Error: ' + chalk.red(location) + ', file not found', opts.verbose);
+      log('Error: ' + chalk.red(location) + ', file not found');
       doneCallback();
       return;
     }
@@ -154,7 +167,7 @@ function fetchRemoteRessource(url, callback) {
 
   imageStream.writable = true;
   imageStream.write = function (data) {
-    buffList.push(new Buffer(data));
+    buffList.push(Buffer.from(data));
   };
   imageStream.end = function () {
     resultBuffer = buffList.toBuffer();
@@ -174,12 +187,6 @@ function fetchRemoteRessource(url, callback) {
 
     callback(resultBuffer);
   }).pipe(imageStream);
-}
-
-function log(message, isVerbose) {
-  if (isVerbose === true) {
-    gutil.log(message);
-  }
 }
 
 // Exporting the plugin main function
